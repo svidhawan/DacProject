@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.app.dao.AdminDaoImpl;
-import com.app.dao.IAdminDao;
 import com.app.dto.ResponseDTO;
 import com.app.pojos.Admin;
 import com.app.repository.AdminRepository;
@@ -17,8 +15,6 @@ public class AdminService implements IAdminService{
 	@Autowired
 	private AdminRepository adminrepo;
 	
-	@Autowired
-	private IAdminDao iadao;
 	
 	@Override
 	public Admin signup(Admin a) {
@@ -28,10 +24,19 @@ public class AdminService implements IAdminService{
 	}
 
 	@Override
-	public ResponseDTO login(Admin a) {
+	public ResponseDTO login(Admin adminDetails) {
 		// TODO Auto-generated method stub
 		
-		return iadao.login(a);
+		Admin temp = adminrepo.findByEmail(adminDetails.getEmail());
+		if (temp != null) {
+			if (adminDetails.getPassword().equals(temp.getPassword()))
+				return new ResponseDTO("success", "Details Found Successfully", temp);
+			else
+				return new ResponseDTO("error", "Admin Details Not Found");
+
+		} else {
+			return new ResponseDTO("error", "Admin Details Not Found");
+		}
 	}
 
 }

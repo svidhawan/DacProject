@@ -5,8 +5,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.app.dao.IUserDao;
 import com.app.dto.ResponseDTO;
+import com.app.pojos.Admin;
 import com.app.pojos.User;
 import com.app.repository.UserRepository;
 
@@ -14,8 +14,7 @@ import com.app.repository.UserRepository;
 @Transactional
 public class UserService implements IUserService{
 
-	@Autowired
-	private IUserDao iuserdao;
+
 	
 	@Autowired
 	private UserRepository userrepo; 
@@ -27,10 +26,19 @@ public class UserService implements IUserService{
 	}
 
 	@Override
-	public ResponseDTO login(User u) {
-		// TODO Auto-generated method stub
+	public ResponseDTO login(User userdetails) {
+		// TODO Auto- method stub
 		
-	     return	iuserdao.login(u);
+		User temp = userrepo.findByEmail(userdetails.getEmail());
+		if (temp != null) {
+			if (userdetails.getPassword().equals(temp.getPassword()))
+				return new ResponseDTO("success", "Details Found Successfully", temp);
+			else
+				return new ResponseDTO("error", "User Details Not Found");
+
+		} else {
+			return new ResponseDTO("error", "User Details Not Found");
+		}
 	
 	}
 

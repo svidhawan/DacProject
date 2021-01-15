@@ -22,7 +22,7 @@ public class Admin {
 //    createdOn TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 //);
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
      private Integer admin_Id;
 	
 	@Column(length=30)
