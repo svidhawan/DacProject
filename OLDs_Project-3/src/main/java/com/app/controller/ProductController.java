@@ -54,10 +54,9 @@ public class ProductController {
 		
 		 return new ResponseEntity<>(new ResponseDTO("success","Product Strored SuccessFully",proservice.save(prod)),HttpStatus.OK);
 	}
-	@PutMapping("/edit")
-	public ResponseEntity<?> editProduct(@RequestBody Product product) {
-		proservice.edit(product);
-		return new ResponseEntity<>(new ResponseDTO("success","Product Updated SuccessFully",product),HttpStatus.OK);
+	@PutMapping("/edit/{id}")
+	public ResponseEntity<?> editProduct(@RequestBody Product product,@PathVariable int id) {
+		return new ResponseEntity<>(new ResponseDTO("success","Product Updated SuccessFully",proservice.edit(id,product)),HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")
